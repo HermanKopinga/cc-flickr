@@ -10,7 +10,7 @@
   a
   {
           text-decoration:	none;
-          color:		black;
+          color:		#111111;
   }
   a.explicit
   {
@@ -24,6 +24,7 @@
   body
   {
           font-family: 		Monaco, "Lucida Console", monospace, sans-serif;
+          color:		#111111;
   }
 
   div.image
@@ -58,18 +59,21 @@
   <br />
   <a href="http://www.creativecommons.org"><img src="cc.logo.png" alt="Creative Commons logo" /></a><br />
   <br />
-  Tool by: <a href="http://herman.kopinga.nl">Herman Kopinga</a> <a href="mailto: herman@kopinga.nl">(mail)</a>
+  Tool by: <a href="http://herman.kopinga.nl">Herman Kopinga</a> <a href="mailto:herman@kopinga.nl">(mail)</a>
   </div>
   <div class="main">
+  <font color="#dd2222">Unfortunately Flickr changed something and this tool is not functioning as it should :( <br />
+  Some licenses are not displayed correctly.<br />
+  Suggestions on how to fix this? Please drop me a line. <br />The source is on <a href="https://github.com/HermanKopinga/cc-flickr" class="explicit">GitHub</a> and uses the (outdated) <a href="http://phpflickr.com/" class="explicit">phpFlickr</a> library.</font><br /><br /> 
   <form action="" method="post">
   <div>
-    Imageid or URL:<input type="text" size="40" name="image" <? if ($_POST['image']){echo "value=\"" . $_POST['image'] . "\"";} ?> />
+    Imageid or URL:<input type="text" size="40" name="image" <?php if ($_POST['image']){echo "value=\"" . $_POST['image'] . "\"";} ?> />
     <input type="submit" value="CC" /><br />
   </div>
   </form>
 
 
-<?
+<?php
 function flickr_connect()
 {
   require_once("phpFlickr/phpFlickr.php");
@@ -84,7 +88,7 @@ function flickr_connect()
 
 if ($_POST['image'])
 {
-  if (preg_match("/http:\/\/([a-z0-9]{2,}\-?\.[a-z]{2,3})(\.?[a-z]{2,3})?/i", $_POST['image'])) 
+  if (preg_match("/http:\/\/([a-z0-9]{2,}\-?\.[a-z]{2,3})(\.?[a-z]{2,3})?/i", $_POST['image']) or preg_match("/https:\/\/([a-z0-9]{2,}\-?\.[a-z]{2,3})(\.?[a-z]{2,3})?/i", $_POST['image'])) 
   {
     // nog wat doen om alleen ID te krijgen.
     if (ereg("\/([0-9]+)\/",$_POST['image'],$results))
@@ -115,7 +119,7 @@ if ($_POST['image'])
     $licenses = $f->photos_licenses_getinfo();
 
     // Format 1, for dead-tree.
-    echo "<b>Dead tree format:</b><br />\n";
+    echo "<br />\n<b>Dead tree format:</b><br />\n";
     echo $photo['title'] . " by " . $photo['owner']['realname'] . "<br />\n";
     echo $photo['urls']['url'][0]['_content'] . "<br />\n";
     echo $licenses[$photo['license']]['name'] . "<br />\n";
@@ -166,9 +170,11 @@ Why? Because it takes about 20 clicks, a bit of waiting time and 3 times copy-pa
 <br />
 Finding Creative Common licenced work is easy using Flickr's <a href="http://www.flickr.com/search/advanced/" class="explicit">advanced search</a>.<br />
 <br />
-Paste the ID or full URL of a Flickr image and when a Creative Commons license is attached to the image the attribution will be generated. For example try: 3019886055.
+Paste the ID or full URL of a Flickr image and when a Creative Commons license is attached to the image the attribution will be generated. For example try: 3019886055.<br />
+<br />
+After several source code requests I <a href="https://github.com/HermanKopinga/cc-flickr" class="explicit">shared this project on GitHub</a>. If you use it I'd like it if you <a href="mailto:herman@kopinga.nl" class="explicit">drop a line.</a><br />
 </div>
-<?
+<?php
 }
 //  <a href="?licenses=show">all Flickr licenses</a><br />
 ?>
